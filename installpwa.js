@@ -1,3 +1,24 @@
+// detect html load
+function waitForElm(selector) {
+    return new Promise(resolve => {
+        if (document.querySelector(selector)) {
+            return resolve(document.querySelector(selector));
+        }
+
+        const observer = new MutationObserver(mutations => {
+            if (document.querySelector(selector)) {
+                observer.disconnect();
+                resolve(document.querySelector(selector));
+            }
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    });
+}
+
 // get icon for the install app and manfest
 function getIcons() {
  	var links = document.getElementsByTagName('link');
@@ -97,11 +118,42 @@ var manifest = `
 }
 `;
 console.log(manifest)
-const blob = new Blob([strs]);
-const url = URL.createObjectURL(blob);
+var blob = new Blob([manifest]);
+var murl = URL.createObjectURL(blob);
+
+// create the dumy service worker
+var sw = `
+var staticCacheName = "pwa";
+
+self.addEventListener("install", function (e) {
+e.waitUntil(
+	caches.open(staticCacheName).then(function (cache) {
+		console.log('opened pwa cache "sw for installing app only"')
+	})
+);
+});
+`
+var swblob = new Blob([sw]);
+var swurl = URL.createObjectURL(swblob);
+
 
 // create manifest to the html
 const link = document.createElement('link');
 link.rel = 'manifest';
-link.href = url /* custom blob */;
+link.href = murl /* custom blob */;
+link.id = 'pwamanifestbygeoloupteam'
 document.head.appendChild(link);
+// start sw
+if ('serviceWorker' in navigator) {
+    try {
+        navigator.serviceWorker.register(swurl);
+    }
+    catch (e) {
+      console.log('SW registration failed');
+    }
+}
+
+// wait manifest to be load
+waitForElm('pwamanifestbygeoloupteam').then((elm) => {
+    console.log('[pwa installer] Ready click on the icon on top right of the screen and say yes to install the app')
+});
