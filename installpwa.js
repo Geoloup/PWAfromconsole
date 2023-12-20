@@ -74,9 +74,9 @@ icons = JSON.stringify(getIcons()
 // create blob url
 var manifest = `
 {
-    "name":"",
-    "short_name":"",
-    "start_url":"",
+    "name":"${document.title.replaceAll('"','').replaceAll("'","")}",
+    "short_name":"${document.title.replaceAll('"','').replaceAll("'","")}",
+    "start_url":"${location.pathname}",
     "display":"standalone",
     "background_color":"#5900b3",
     "theme_color":"black",
@@ -84,18 +84,19 @@ var manifest = `
     "description":"INstalled with geoloup/PWAfromconsole",
     "icons":[
     {
-      "src":"",                      
+      "src":"${icons[0]}",                      
       "sizes":"192x192",
       "type":"image/png"
     },
     {
-      "src":"",
+      "src":"${icons[0]}",
       "sizes":"512x512",
       "type":"image/png"
     }
   ]
 }
 `;
+console.log(manifest)
 const blob = new Blob([strs]);
 const url = URL.createObjectURL(blob);
 
