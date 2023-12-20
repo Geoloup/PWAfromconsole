@@ -121,39 +121,11 @@ console.log(manifest)
 var blob = new Blob([manifest]);
 var murl = URL.createObjectURL(blob);
 
-// create the dumy service worker
-var sw = `
-var staticCacheName = "pwa";
-
-self.addEventListener("install", function (e) {
-e.waitUntil(
-	caches.open(staticCacheName).then(function (cache) {
-		console.log('opened pwa cache "sw for installing app only"')
-	})
-);
-});
-`
-var swblob = new Blob([sw]);
-var swurl = URL.createObjectURL(swblob);
-
-
 // create manifest to the html
 const link = document.createElement('link');
 link.rel = 'manifest';
 link.href = murl /* custom blob */;
 link.id = 'pwamanifestbygeoloupteam'
-document.head.appendChild(link);
-// start sw
-if ('serviceWorker' in navigator) {
-    try {
-        navigator.serviceWorker.register(swurl);
-    }
-    catch (e) {
-      console.log('SW registration failed');
-    }
-}
-
-// wait manifest to be load
-waitForElm('pwamanifestbygeoloupteam').then((elm) => {
+document.head.appendChild(link);pteam').then((elm) => {
     console.log('[pwa installer] Ready click on the icon on top right of the screen and say yes to install the app')
 });
