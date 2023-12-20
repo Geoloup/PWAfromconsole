@@ -126,6 +126,7 @@ const link = document.createElement('link');
 link.rel = 'manifest';
 link.href = murl /* custom blob */;
 link.id = 'pwamanifestbygeoloupteam'
-document.head.appendChild(link);pteam').then((elm) => {
+document.head.appendChild(link)
+waitForElm('pwamanifestbygeoloupteam').then((elm) => {
     console.log('[pwa installer] Ready click on the icon on top right of the screen and say yes to install the app')
 });
