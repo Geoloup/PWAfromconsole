@@ -91,7 +91,7 @@ function getIcons() {
  	return icons;
 }
 
-icons = JSON.stringify(getIcons()
+icons = JSON.stringify(getIcons())
 // create blob url
 var manifest = `
 {
