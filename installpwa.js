@@ -91,13 +91,13 @@ function getIcons() {
  	return icons;
 }
 
-icons = JSON.stringify(getIcons())
+icons = getIcons()
 // create blob url
 var manifest = `
 {
     "name":"${document.title.replaceAll('"','').replaceAll("'","")}",
     "short_name":"${document.title.replaceAll('"','').replaceAll("'","")}",
-    "start_url":"${location.pathname}",
+    "start_url":"${location.pathname.replace('/','')}/",
     "display":"standalone",
     "background_color":"#5900b3",
     "theme_color":"black",
@@ -118,6 +118,7 @@ var manifest = `
 }
 `;
 console.log(manifest)
+console.log(icons)
 var blob = new Blob([manifest]);
 var murl = URL.createObjectURL(blob);
 
