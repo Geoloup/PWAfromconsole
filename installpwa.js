@@ -19,6 +19,28 @@ function waitForElm(selector) {
     });
 }
 
+function createBlobImageFromUrl(imageUrl, newWidth, newHeight) {
+    const img = new Image();
+    img.crossOrigin = 'anonymous'; // Enable CORS for external images
+    img.src = imageUrl;
+
+    img.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+        canvas.toBlob(function(blob) {
+            // Use the blob as needed (e.g., upload to a server)
+            console.log('Blob image created successfully!');
+        }, 'image/jpeg', 0.9);
+    };
+}
+
+
+
 // get icon for the install app and manfest
 function getIcons() {
  	var links = document.getElementsByTagName('link');
@@ -106,18 +128,21 @@ var manifest = `
     "description":"INstalled with geoloup/PWAfromconsole",
     "icons":[
     {
-      "src":"${icons[0]}",                      
+      "src":"${createBlobImageFromUrl(icons[0], 192, 192)}",                      
       "sizes":"192x192",
       "type":"image/png"
     },
     {
-      "src":"${icons[0]}",
+      "src":"${createBlobImageFromUrl(icons[0], 512, 512)}",
       "sizes":"512x512",
       "type":"image/png"
     }
   ]
 }
-`;
+`;// Example usage:
+
+// Example usage:
+
 console.log(manifest)
 console.log(icons)
 var blob = new Blob([manifest]);
