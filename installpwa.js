@@ -102,6 +102,7 @@ var manifest = `
     "background_color":"#5900b3",
     "theme_color":"black",
     "scope": ".",
+    "display": "standalone",
     "description":"INstalled with geoloup/PWAfromconsole",
     "icons":[
     {
